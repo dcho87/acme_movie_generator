@@ -20,7 +20,7 @@ const moviesReducer = (state = [], action) => {
         return state.filter((movie) => movie.id !== action.movie.id);
     }
     if(action.type === UPVOTE){
-       return [...state].map((movie) => {
+       return state.map((movie) => {
         if(movie.id === action.movie.id){
             movie.star++
         } return movie
@@ -28,7 +28,7 @@ const moviesReducer = (state = [], action) => {
       )
     }
     if(action.type === DOWNVOTE){
-        return [...state].map((movie) => {
+        return state.map((movie) => {
          if(movie.id === action.movie.id){
              movie.star--
           } return movie
