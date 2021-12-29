@@ -10,10 +10,6 @@ class AddMovie extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-componentDidMount(){
-  this.setState(store.getState())
-}
-
   async handleSubmit(e) {
     e.preventDefault();
     const movie = await faker.name.title();
@@ -29,16 +25,10 @@ componentDidMount(){
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-      movies: state.movies
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     addMovie: (movie) => dispatch(addMovie(movie)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddMovie);
+export default connect((state) => state, mapDispatchToProps)(AddMovie);

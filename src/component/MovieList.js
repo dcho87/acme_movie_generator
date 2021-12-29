@@ -1,47 +1,71 @@
-import React, { Component } from "react";
-import store, {
-  fetchMovies,
+import React from "react";
+import {
   deleteMovie,
   upvoteMovie,
   downvoteMovie,
 } from "../store";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 
-class MovieList extends Component {
-  componentDidMount() {
-    this.props.load();
-  }
+function MovieList(){
+    const dispatch = useDispatch()
+    const movies = useSelector(state => state.movies)
+    console.log(movies)
 
-  render() {
-    const { movies, deleteMovie, upvoteMovie, downvoteMovie } = this.props;
     return (
-      <div>
-        <ul>
-          {movies.map((movie) => {
-            return (
-              <div key={movie.id}>
-                <button onClick={() => deleteMovie(movie)}> X </button>
-                {movie.movieTitle} ({movie.star})
-                <button onClick={() => upvoteMovie(movie)}> + </button>
-                <button onClick={() => downvoteMovie(movie)}> - </button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
+        <div>
+          <ul>
+            {movies.map((movie) => {
+              return (
+                <div key={movie.id}>
+                  <button onClick={() => dispatch(deleteMovie(movie))}> X </button>
+                  {movie.movieTitle} ({movie.star})
+                  <button onClick={() => dispatch(upvoteMovie(movie))}> + </button>
+                  <button onClick={() => dispatch(downvoteMovie(movie))}> - </button>
+                </div>
+              );
+            })}
+          </ul>
+        </div>
+      );
 }
 
-const mapStateToProps = ({ movies }) => ({
-  movies,
-});
+export default MovieList
 
-const mapDispatchToProps = (dispatch) => ({
-  load: () => dispatch(fetchMovies()),
-  deleteMovie: (movie) => dispatch(deleteMovie(movie)),
-  upvoteMovie: (movie) => dispatch(upvoteMovie(movie)),
-  downvoteMovie: (movie) => dispatch(downvoteMovie(movie)),
-});
+// class MovieList extends Component {
+//   componentDidMount() {
+//     this.props.load();
+//   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieList);
+//   render() {
+//     const { movies, deleteMovie, upvoteMovie, downvoteMovie } = this.props;
+//     return (
+//       <div>
+//         <ul>
+//           {movies.map((movie) => {
+//             return (
+//               <div key={movie.id}>
+//                 <button onClick={() => deleteMovie(movie)}> X </button>
+//                 {movie.movieTitle} ({movie.star})
+//                 <button onClick={() => upvoteMovie(movie)}> + </button>
+//                 <button onClick={() => downvoteMovie(movie)}> - </button>
+//               </div>
+//             );
+//           })}
+//         </ul>
+//       </div>
+//     );
+//   }
+// }
+
+// const mapStateToProps = ({ movies }) => ({
+//   movies,
+// });
+
+// const mapDispatchToProps = (dispatch) => ({
+//   load: () => dispatch(fetchMovies()),
+//   deleteMovie: (movie) => dispatch(deleteMovie(movie)),
+//   upvoteMovie: (movie) => dispatch(upvoteMovie(movie)),
+//   downvoteMovie: (movie) => dispatch(downvoteMovie(movie)),
+// });
+
+
