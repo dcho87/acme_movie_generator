@@ -2,32 +2,31 @@ import React, { Component } from "react";
 import store, { fetchMovies, deleteMovie, upvoteMovie, downvoteMovie } from "../store";
 import { connect } from "react-redux";
 
+
 class MovieList extends Component {
     constructor(){
         super()
-        this.state = {
-            movies: []
-        }
-    }
+        this.state = store.getState()
+}
 
 async componentDidMount(){
     await this.props.load()
-    this.setState({movies: store.getState()})
+    this.setState(store.getState())
 }
 
   render() {
     const { movies, deleteMovie, upvoteMovie, downvoteMovie } = this.props
     return (
-      <div key={movies}>
+      <div>
         <ul>
           {movies.map((movie) => {
             return (
-              <li key={movie.id}>
-                <button onClick={() => deleteMovie(movie.id)}> X </button>
+              <div key={movie.id}>
+                <button onClick={() => deleteMovie(movie)}> X </button>
                 {movie.movieTitle} ({movie.star})
                 <button onClick={()=> upvoteMovie(movie)}> + </button>
                 <button onClick={()=> downvoteMovie(movie)}> - </button>
-              </li>
+              </div>
             )
           })}
         </ul>
@@ -36,14 +35,20 @@ async componentDidMount(){
   }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        movies: state.movies
+    }
+}
+
 const mapDispatchToProps = (dispatch) => ({
     load: () => dispatch(fetchMovies()),
-    deleteMovie: (id) => dispatch(deleteMovie(id * 1)),
+    deleteMovie: (movie) => dispatch(deleteMovie(movie)),
     upvoteMovie: (movie) => dispatch(upvoteMovie(movie)),
     downvoteMovie: (movie) => dispatch(downvoteMovie(movie))
 })
 
 export default connect(
-  (state) => state,
+  mapStateToProps,
   mapDispatchToProps
 )(MovieList);

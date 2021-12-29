@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import store, { fetchMovies } from "../store";
 import AddMovie from "./AddMovie";
 import MovieList from "./MovieList";
 
@@ -18,10 +17,5 @@ class App extends Component {
 }
 
 export default connect(
-  state => state,
-  (dispatch) => {
-    return {
-      load: () => dispatch(fetchMovies()),
-    };
-  }
+  (state) => state,
 )(App);

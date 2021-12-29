@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import { addMovie } from "../store";
+import store, { addMovie } from "../store";
 import { connect } from "react-redux";
 import faker from "faker";
 
 class AddMovie extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movieTitle: "",
-      star: 3,
-    };
+  constructor(props) {
+    super(props);
+    this.state = store.getState()
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+componentDidMount(){
+  this.setState(store.getState())
+}
 
   async handleSubmit(e) {
     e.preventDefault();
@@ -28,10 +29,16 @@ class AddMovie extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+      movies: state.movies
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addMovie: (movie) => dispatch(addMovie(movie)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(AddMovie);
+export default connect(mapStateToProps, mapDispatchToProps)(AddMovie);

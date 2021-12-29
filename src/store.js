@@ -11,7 +11,7 @@ const DOWNVOTE = 'DOWNVOTE'
 
 const moviesReducer = (state = [], action) => {
     if(action.type === SET_MOVIE){
-        return action.movies
+        return action.movies.sort((a,b) => b.star - a.star)
     }
     if(action.type === ADD_MOVIE){
         return [...state, action.movie]
@@ -23,7 +23,6 @@ const moviesReducer = (state = [], action) => {
        return [...state].map((movie) => {
         if(movie.id === action.movie.id){
             movie.star++
-            return movie
         } return movie
         }
       )
@@ -32,10 +31,9 @@ const moviesReducer = (state = [], action) => {
         return [...state].map((movie) => {
          if(movie.id === action.movie.id){
              movie.star--
-             return movie
-         } return movie
+          } return movie
          }
-       )
+       ) 
      }
     return state;
 }
@@ -84,13 +82,10 @@ const addMovie = (movie) => {
     }
 }
 
-const deleteMovie = (id) => {
+const deleteMovie = (movie) => {
     return async(dispatch) => {
-      await axios.delete(`/api/${id}`)
-      const data = _deleteMovie(id)
-      const movies = (await axios.get('/api/movies')).data
-      dispatch(setMovies(movies))
-      dispatch(data)
+      await axios.delete(`/api/${movie.id}`)
+      dispatch(_deleteMovie(movie))
     }
   }
 
