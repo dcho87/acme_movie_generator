@@ -19,8 +19,8 @@ function MovieList(){
                 <div key={movie.id}>
                   <button onClick={() => dispatch(deleteMovie(movie))}> X </button>
                   {movie.movieTitle} ({movie.star})
-                  <button onClick={() => dispatch(upvoteMovie(movie))}> + </button>
-                  <button onClick={() => dispatch(downvoteMovie(movie))}> - </button>
+                  <button disabled={ movie.star === 5} onClick={() => dispatch(upvoteMovie(movie))}> + </button>
+                  <button disabled={ movie.star === 1} onClick={() => dispatch(downvoteMovie(movie))}> - </button>
                 </div>
               );
             })}
