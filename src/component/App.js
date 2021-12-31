@@ -6,9 +6,6 @@ import MovieList from "./MovieList";
 
 function App(){
 
-const dispatch = useDispatch()
-dispatch(fetchMovies())
-
         return (
             <div>
               <h1> ACME Movie Generator </h1>

@@ -1,35 +1,42 @@
-import React from "react";
-import {
-  deleteMovie,
-  upvoteMovie,
-  downvoteMovie,
-} from "../store";
-import { connect, useDispatch, useSelector } from "react-redux";
+import React, {useEffect} from "react";
+import { deleteMovie, upvoteMovie, downvoteMovie, fetchMovies } from "../store";
+import { useDispatch, useSelector } from "react-redux";
 
-function MovieList(){
-    const dispatch = useDispatch()
-    const movies = useSelector(state => state.movies)
-    console.log(movies)
-
-    return (
-        <div>
-          <ul>
-            {movies.map((movie) => {
-              return (
-                <div key={movie.id}>
-                  <button onClick={() => dispatch(deleteMovie(movie))}> X </button>
-                  {movie.movieTitle} ({movie.star})
-                  <button disabled={ movie.star === 5} onClick={() => dispatch(upvoteMovie(movie))}> + </button>
-                  <button disabled={ movie.star === 1} onClick={() => dispatch(downvoteMovie(movie))}> - </button>
-                </div>
-              );
-            })}
-          </ul>
-        </div>
-      );
+function MovieList() {
+  const dispatch = useDispatch();
+  const movies = useSelector((state) => [...state.movies]);
+  useEffect(() => dispatch(fetchMovies()),[movies])
+  return (
+    <div>
+      <ul>
+        {movies.map((movie) => {
+          return (
+            <div key={movie.id}>
+              <button onClick={() => dispatch(deleteMovie(movie))}> X </button>
+              {movie.movieTitle} ({movie.star})
+              <button
+                disabled={movie.star === 5}
+                onClick={() => dispatch(upvoteMovie(movie))}
+              >
+                {" "}
+                +{" "}
+              </button>
+              <button
+                disabled={movie.star === 1}
+                onClick={() => dispatch(downvoteMovie(movie))}
+              >
+                {" "}
+                -{" "}
+              </button>
+            </div>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
 
-export default MovieList
+export default MovieList;
 
 // class MovieList extends Component {
 //   componentDidMount() {
@@ -67,5 +74,3 @@ export default MovieList
 //   upvoteMovie: (movie) => dispatch(upvoteMovie(movie)),
 //   downvoteMovie: (movie) => dispatch(downvoteMovie(movie)),
 // });
-
-

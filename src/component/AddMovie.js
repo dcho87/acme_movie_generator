@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import store, { addMovie } from "../store";
 import { connect } from "react-redux";
-import faker from "faker";
+
 
 class AddMovie extends Component {
   constructor(props) {
@@ -12,8 +12,7 @@ class AddMovie extends Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    const movie = await faker.name.title();
-    this.props.addMovie({movieTitle: movie})
+    this.props.addMovie()
   }
 
   render() {

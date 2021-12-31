@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore, combineReducers } from 'redux';
 import thunk from 'redux-thunk'
 import axios from 'axios'
+import faker from 'faker'
 
 const SET_MOVIE = "SET_MOVIE"
 const ADD_MOVIE = "ADD_MOVIE";
@@ -11,7 +12,7 @@ const DOWNVOTE = 'DOWNVOTE'
 
 const moviesReducer = (state = [], action) => {
     if(action.type === SET_MOVIE){
-        return action.movies.sort((a,b) => b.star - a.star)
+        return [...action.movies.sort((a,b) => b.star - a.star)]
     }
     if(action.type === ADD_MOVIE){
         return [...state, action.movie]
@@ -20,7 +21,7 @@ const moviesReducer = (state = [], action) => {
         return state.filter((movie) => movie.id !== action.movie.id);
     }
     if(action.type === UPVOTE){
-       return state.map((movie) => {
+       return [...state].map((movie) => {
         if(movie.id === action.movie.id){
             movie.star++
         } return movie
@@ -28,12 +29,12 @@ const moviesReducer = (state = [], action) => {
       )
     }
     if(action.type === DOWNVOTE){
-        return state.map((movie) => {
+        return [...state].map((movie) => {
          if(movie.id === action.movie.id){
-             movie.star--
+            movie.star--
           } return movie
          }
-       ) 
+       )
      }
     return state;
 }
@@ -75,9 +76,10 @@ const setMovies = (movies) => {
 
 //thunk
 
-const addMovie = (movie) => {
+const addMovie = () => {
     return async(dispatch) =>{
-        const data = (await axios.post('/api/movies', movie)).data
+        const movie = await faker.name.title()
+        const data = (await axios.post('/api/movies', {movieTitle: movie})).data
         dispatch(_addMovie((data)))
     }
 }
@@ -91,15 +93,15 @@ const deleteMovie = (movie) => {
 
 const upvoteMovie = (movie)=> {
     return async(dispatch) => {
-        const updated = (await axios.put(`/api/${movie.id}`, movie)).data
-        dispatch(_upvoteMovie(updated))
+        dispatch(_upvoteMovie(movie))
+        await axios.put(`/api/${movie.id}`, movie)
     }
 }
 
 const downvoteMovie = (movie)=> {
     return async(dispatch) => {
-        const updated = (await axios.put(`/api/${movie.id}`, movie)).data
-        dispatch(_downMovie(updated))
+        dispatch(_downMovie(movie))
+        await axios.put(`/api/${movie.id}`, movie)
     }
 }
 
