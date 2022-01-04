@@ -1,6 +1,4 @@
 import React from "react";
-import { connect , useDispatch } from "react-redux";
-import { fetchMovies } from "../store";
 import AddMovie from "./AddMovie";
 import MovieList from "./MovieList";
 

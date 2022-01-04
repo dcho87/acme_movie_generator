@@ -81,6 +81,7 @@ const addMovie = () => {
         const movie = await faker.name.title()
         const data = (await axios.post('/api/movies', {movieTitle: movie})).data
         dispatch(_addMovie((data)))
+        dispatch(fetchMovies())
     }
 }
 
@@ -88,6 +89,7 @@ const deleteMovie = (movie) => {
     return async(dispatch) => {
       await axios.delete(`/api/${movie.id}`)
       dispatch(_deleteMovie(movie))
+      dispatch(fetchMovies())
     }
   }
 
@@ -95,6 +97,7 @@ const upvoteMovie = (movie)=> {
     return async(dispatch) => {
         dispatch(_upvoteMovie(movie))
         await axios.put(`/api/${movie.id}`, movie)
+        dispatch(fetchMovies())
     }
 }
 
@@ -102,12 +105,14 @@ const downvoteMovie = (movie)=> {
     return async(dispatch) => {
         dispatch(_downMovie(movie))
         await axios.put(`/api/${movie.id}`, movie)
+        dispatch(fetchMovies())
     }
 }
 
 const fetchMovies = () => {
     return async(dispatch)=> {
         const movies = (await axios.get('/api/movies')).data
+        console.log('fetched')
         dispatch(setMovies(movies))
     }
 }

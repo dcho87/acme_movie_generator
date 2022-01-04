@@ -1,11 +1,13 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { deleteMovie, upvoteMovie, downvoteMovie, fetchMovies } from "../store";
 import { useDispatch, useSelector } from "react-redux";
 
 function MovieList() {
   const dispatch = useDispatch();
   const movies = useSelector((state) => [...state.movies]);
-  useEffect(() => dispatch(fetchMovies()),[movies])
+
+  useEffect(() => dispatch(fetchMovies()), [])
+  
   return (
     <div>
       <ul>
